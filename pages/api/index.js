@@ -1,24 +1,18 @@
-// Point d'entrée Vercel : /api?username=AmDrouin
-// Renvoie le profil complet dans UN seul SVG encadré.
-
-const { fetchStats } = require("../lib/github");
-const { renderSVG } = require("../lib/render");
+import { fetchStats } from "../../github";
+import { renderSVG } from "../../render";
 
 function errorSVG(message) {
   return `<svg width="850" height="120" xmlns="http://www.w3.org/2000/svg">
     <rect x="1.5" y="1.5" width="847" height="117" rx="18" fill="#1d2021" stroke="#fb4934" stroke-width="2"/>
     <text x="32" y="52" font-family="monospace" font-size="15" font-weight="700" fill="#fb4934">Erreur : ${String(message).replace(/[<>&]/g, "")}</text>
-    <text x="32" y="80" font-family="monospace" font-size="12" fill="#928374">Vérifie le paramètre username et la variable PAT_1.</text>
+    <text x="32" y="80" font-family="monospace" font-size="12" fill="#928374">Verifie le parametre username et la variable PAT_1.</text>
   </svg>`;
 }
 
-module.exports = async (req, res) => {
-  const username =
-    (req.query && req.query.username) ||
-    new URL(req.url, "http://x").searchParams.get("username");
+export default async function handler(req, res) {
+  const { username } = req.query;
 
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
-  // cache 2h côté CDN, revalidation en arrière-plan
   res.setHeader("Cache-Control", "public, max-age=7200, s-maxage=7200, stale-while-revalidate=86400");
 
   try {
@@ -31,4 +25,4 @@ module.exports = async (req, res) => {
   } catch (e) {
     res.status(200).send(errorSVG(e.message));
   }
-};
+}
