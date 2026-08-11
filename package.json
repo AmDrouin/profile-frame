@@ -1,0 +1,9 @@
+{
+  "name": "profile-frame",
+  "version": "1.0.0",
+  "description": "Profil GitHub complet rendu dans un seul cadre SVG (thème Gruvbox).",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
