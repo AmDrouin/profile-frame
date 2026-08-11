@@ -106,6 +106,11 @@ async function fetchStats(token, login) {
   const { current, longest } = computeStreak(cc.contributionCalendar.weeks);
   const avatarDataUri = await fetchAvatarDataUri(u.avatarUrl);
 
+  // Heatmap : tableau de semaines, chaque semaine = tableau de 7 comptes
+  const weeks = cc.contributionCalendar.weeks.map(w =>
+    w.contributionDays.map(d => d.contributionCount)
+  );
+
   return {
     login: u.login,
     name: u.name,
@@ -120,6 +125,7 @@ async function fetchStats(token, login) {
     totalContributions: cc.contributionCalendar.totalContributions,
     currentStreak: current,
     longestStreak: longest,
+    weeks,
   };
 }
 
